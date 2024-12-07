@@ -18,11 +18,10 @@ if [[ ! -d "$DESTINATION" ]]; then
 fi
 
 ALLCOMMANDS=(
-#   mkeot
   ttf2eot
-#   eot2ttf
   sfnt2woff
   woff2_compress
+  woff2otf
 )
 
 # ToDo: I need to sanitize the names, remove spaces, and replace with underscores (_).
@@ -33,7 +32,7 @@ for CMD in "${ALLCOMMANDS[@]}"
 do
    :
    if [[ ! -f $(command -v "$CMD") ]];then
-        echo "Cannot convert ($CMD). The following packages are required: eot-utils woff-tools woff2"
+        echo "Cannot convert ($CMD). The following packages are required: ttf2eot, eot-utils, woff-tools, woff2, woff2otf"
         exit 1
     fi
 done
