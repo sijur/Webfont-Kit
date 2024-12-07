@@ -61,7 +61,7 @@ woff2_compress "${SOURCE}" > "${WOFF2_PATH}"
 
 # copy ttf file
 TTF_PATH="$DESTINATION/$FILENAME.ttf"
-mv "${SOURCE}" "${TTF_PATH}"
+cp "${SOURCE}" "${TTF_PATH}"
 
 FONT_TXT_PATH="$DESTINATION/${DESTINATION//.\/}.txt"
 FONT_FACE_DECLARATION="@font-face {
