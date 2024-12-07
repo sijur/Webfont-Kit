@@ -54,6 +54,12 @@ WOFF2_PATH="$DESTINATION/$FILENAME.woff2"
 echo "[TTF -> WOFF2]: (over-)write to $WOFF2_PATH"
 woff2_compress "${SOURCE}" > "${WOFF2_PATH}"
 
+# Install woff2otf if you haven't already
+# sudo apt-get install woff2otf 
+
+# Convert WOFF to OTF
+# woff2otf input.woff output.otf
+
 # copy ttf file
 TTF_PATH="$DESTINATION/$FILENAME.ttf"
 mv "${SOURCE}" "${TTF_PATH}"
