@@ -6,7 +6,7 @@ FILENAME=$(basename "${SOURCE%.ttf}")
 
 # check if destination is defined or empty
 if [[ -v DESTINATION && -z $DESTINATION ]]; then
-  echo echo "usage: convert_otf requires a destination."
+  echo echo "usage: convert_ttf requires a destination."
   echo "usage: convert_otf input.otf /path/to/output/"
   exit 1
 fi
@@ -21,7 +21,6 @@ ALLCOMMANDS=(
   ttf2eot
   sfnt2woff
   woff2_compress
-  woff2otf
 )
 
 # ToDo: I need to sanitize the names, remove spaces, and replace with underscores (_).
@@ -32,7 +31,7 @@ for CMD in "${ALLCOMMANDS[@]}"
 do
    :
    if [[ ! -f $(command -v "$CMD") ]];then
-        echo "Cannot convert ($CMD). The following packages are required: ttf2eot, eot-utils, woff-tools, woff2, woff2otf"
+        echo "Cannot use ($CMD). The following packages are required: ttf2eot, eot-utils, woff-tools, woff2, woff2otf"
         exit 1
     fi
 done
@@ -54,7 +53,7 @@ echo "[TTF -> WOFF2]: (over-)write to $WOFF2_PATH"
 woff2_compress "${SOURCE}" > "${WOFF2_PATH}"
 
 OTF_PATH="$DESTINATION/$FILENAME.otf"
-python convert_woff_2_otf.py "${WOFF_PATH}" "${OTF_PATH}"
+python3 ~/bash_files/bash_scripts/Webfont-Kit/convert_woff_2_otf.py "${WOFF_PATH}" "${OTF_PATH}"
 
 # copy ttf file
 TTF_PATH="$DESTINATION/$FILENAME.ttf"

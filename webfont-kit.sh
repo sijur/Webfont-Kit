@@ -8,21 +8,16 @@ DESTINATION=$2
 type=${SOURCE: -4}
 
 # we omit mime check since we use this script only locally and assume it's otf
-# if [[ ! "$type" =~ ^(".otf"|".ttf"|".eot"|"woff"|"off2")$ ]]; then
-#   echo "usage: convert_otf requires an OTF file."
-#   echo "usage: convert_otf input.otf /path/to/output/"
-#   exit 1
-# fi
-
-if [[ $type == ".otf" ]]; then
-  echo "otf equals $type"
-  exit 0
+if [[ ! "$type" =~ ^(".otf"|".ttf"|".eot"|"woff"|"off2")$ ]]; then
+  echo "usage: convert_otf requires an OTF file."
+  echo "usage: convert_otf input.otf /path/to/output/"
+  exit 1
 fi
 
 if [[ $type == ".otf" ]]; then
-  /bin/bash ~/bash_files/bash_scripts/Webfont-Kit/convert_otf.sh
+  /bin/bash ~/bash_files/bash_scripts/Webfont-Kit/convert_otf.sh $SOURCE $DESTINATION
 elif [[ $type == ".ttf" ]]; then
-  /bin/bash ~/bash_files/bash_scripts/Webfont-Kit/convert_ttf.sh
+  /bin/bash ~/bash_files/bash_scripts/Webfont-Kit/convert_ttf.sh $SOURCE $DESTINATION
 # elif [[ "$type" == ".eot" ]]; then
 #   /bin/bash ./convert_eot.sh
 # elif [[ ${SOURCE: -5} == ".woff" ]]; then
