@@ -2,30 +2,37 @@
 
 set -e
 
-SOURCE=$1
-DESTINATION=$2
-
-type=${SOURCE: -4}
-
+CUR_DIR=$(pwd)
 # we omit mime check since we use this script only locally and assume it's otf
-if [[ $type != "(.otf|.ttf|.eot|woff|off2)" ]]; then
-  echo "usage: convert_otf requires an OTF file."
-  echo "usage: convert_otf input.otf /path/to/output/"
+
+if [[ $1 =~ \.(otf|ttf|eot|woff|woff2)$ ]]; then
+  type=${BASH_REMATCH[1]}
+else
+  echo "usage: webfont-kit requires a valid font file."
+  echo "Please provide an .otf, .ttf, .eot, .woff, or .woff2 file."
+  echo "usage: webfonts input_file /path/to/output/"
   exit 1
 fi
 
-if [[ $type == ".otf" ]]; then
-  /bin/bash convert_otf.sh
-elif [[ $type == ".ttf" ]]; then
-  /bin/bash convert_ttf.sh
-elif [[ $type == ".eot" ]]; then
-  /bin/bash convert_eot.sh
-elif [[ ${SOURCE: -5} == ".woff" ]]; then
-  /bin/bash convert_woff.sh
-elif [[ ${SOURCE: -6} == ".woff2" ]]; then
-  /bin/bash convert_woff2.sh
-else
-  echo "I can only convert one of the following file types"
-  echo '".otf", ".ttf", ".eot", ".woff", ".woff2"'
-  exit 1
-fi
+case $type in
+  otf)
+    /bin/bash $CUR_DIR/lib/convert_otf.sh $1 $2
+    ;;
+  ttf)
+    /bin/bash $CUR_DIR/lib/convert_ttf.sh $1 $2
+    ;;
+  # eot)
+  #   /bin/bash $CUR_DIR/lib/convert_eot.sh $1 $2
+  #   ;;
+  # woff)
+  #   /bin/bash $CUR_DIR/lib/convert_woff.sh $1 $2
+  #   ;;
+  # woff2)
+  #   /bin/bash $CURR_DIR/lib/convert_woff2.sh $1 $2
+  #   ;;
+  *)
+    echo "Unsupported file type: $type"
+    echo "Please provide an .otf, .ttf, .eot, .woff, or .woff2 file."
+    exit 1
+    ;;
+esac

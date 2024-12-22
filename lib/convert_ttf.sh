@@ -3,11 +3,12 @@
 SOURCE=$1
 DESTINATION=$2
 FILENAME=$(basename "${SOURCE%.ttf}")
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # check if destination is defined or empty
-if [[ -v DESTINATION && -z $DESTINATION ]]; then
-  echo echo "usage: convert_otf requires a destination."
-  echo "usage: convert_otf input.otf /path/to/output/"
+if [[ -z $DESTINATION ]]; then
+  echo "usage: convert_ttf requires a destination folder."
+  echo "usage: webfonts input_file /path/to/output/"
   exit 1
 fi
 
@@ -27,16 +28,13 @@ ALLCOMMANDS=(
 
 # ToDo: I need to sanitize the names, remove spaces, and replace with underscores (_).
 
-# iterate the ALLCOMMANDS list to check for each required command
-# skip as soon as a command is not found
-for CMD in "${ALLCOMMANDS[@]}"
-do
-   :
-   if [[ ! -f $(command -v "$CMD") ]];then
-        echo "Cannot convert ($CMD). The following packages are required: eot-utils woff-tools woff2"
-        exit 1
-    fi
-done
+# check which commands are installed, if not install them
+if [[ ! -x "$SCRIPT_DIR/command_checker.sh" ]]; then
+  echo "The script $SCRIPT_DIR/command_checker.sh is missing or not executable."
+  exit 1
+fi
+
+/bin/bash "$SCRIPT_DIR/command_checker.sh" "${ALLCOMMANDS[@]}"
 
 # TTF -> EOT
 EOT_PATH="$DESTINATION/$FILENAME.eot"
@@ -56,7 +54,7 @@ woff2_compress "${SOURCE}" > "${WOFF2_PATH}"
 
 # copy ttf file
 TTF_PATH="$DESTINATION/$FILENAME.ttf"
-mv "${SOURCE}" "${TTF_PATH}"
+cp "${SOURCE}" "${TTF_PATH}"
 
 FONT_TXT_PATH="$DESTINATION/${DESTINATION//.\/}.txt"
 FONT_FACE_DECLARATION="@font-face {
