@@ -1,2 +1,5 @@
 /bats-core/
 /fonts/
+convert_woff_2_otf.py
+webfont-kit.py
+.gitignore

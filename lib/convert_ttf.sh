@@ -19,9 +19,7 @@ if [[ ! -d "$DESTINATION" ]]; then
 fi
 
 ALLCOMMANDS=(
-#   mkeot
   ttf2eot
-#   eot2ttf
   sfnt2woff
   woff2_compress
 )
@@ -52,8 +50,12 @@ WOFF2_PATH="$DESTINATION/$FILENAME.woff2"
 echo "[TTF -> WOFF2]: (over-)write to $WOFF2_PATH"
 woff2_compress "${SOURCE}" > "${WOFF2_PATH}"
 
+OTF_PATH="$DESTINATION/$FILENAME.otf"
+python3 ~/bash_files/bash_scripts/Webfont-Kit/convert_woff_2_otf.py "${WOFF_PATH}" "${OTF_PATH}"
+
 # copy ttf file
 TTF_PATH="$DESTINATION/$FILENAME.ttf"
+cp "${SOURCE}" "${TTF_PATH}"
 cp "${SOURCE}" "${TTF_PATH}"
 
 FONT_TXT_PATH="$DESTINATION/${DESTINATION//.\/}.txt"
